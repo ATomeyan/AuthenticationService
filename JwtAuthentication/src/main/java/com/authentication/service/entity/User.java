@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * @author Artur Tomeyan
- * @date 01/11/2022
+ * @date 02/11/2022
  */
 @Entity
 @Table(name = "users")
@@ -20,13 +20,10 @@ public class User {
     private Integer id;
 
     @Column(name = "username")
-    private String userName;
+    private String username;
 
     @Column(name = "password")
     private String password;
-
-    @Transient
-    private String confirmPassword;
 
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -36,11 +33,10 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String userName, String password, String confirmPassword, Set<Role> roles) {
+    public User(Integer id, String username, String password, Set<Role> roles) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
-        this.confirmPassword = confirmPassword;
         this.roles = roles;
     }
 
@@ -52,12 +48,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -66,14 +62,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public Set<Role> getRoles() {
@@ -94,9 +82,8 @@ public class User {
 
         return new EqualsBuilder()
                 .append(id, user.id)
-                .append(userName, user.userName)
+                .append(username, user.username)
                 .append(password, user.password)
-                .append(confirmPassword, user.confirmPassword)
                 .append(roles, user.roles)
                 .isEquals();
     }
@@ -104,9 +91,9 @@ public class User {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(id).append(userName)
+                .append(id)
+                .append(username)
                 .append(password)
-                .append(confirmPassword)
                 .append(roles)
                 .toHashCode();
     }
@@ -115,9 +102,8 @@ public class User {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("userName", userName)
+                .append("username", username)
                 .append("password", password)
-                .append("confirmPassword", confirmPassword)
                 .append("roles", roles)
                 .toString();
     }
