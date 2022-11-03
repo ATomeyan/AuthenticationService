@@ -18,10 +18,10 @@ import java.util.Date;
 @Slf4j
 public class JwtProvider {
 
-    @Value("$(jwt.secret.key)")
+    @Value("${jwt.secret.key}")
     private String secretKey;
 
-    @Value("$(jwt.valid.time)")
+    @Value("${jwt.valid.time}")
     private Long validationTime;
 
     public String tokenGenerator(String username) {
@@ -33,7 +33,7 @@ public class JwtProvider {
                 .builder()
                 .setSubject(username)
                 .setExpiration(validate)
-                .signWith(SignatureAlgorithm.ES512, secretKey)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
 

@@ -1,10 +1,11 @@
 package com.authentication.service.config;
 
 import com.authentication.service.config.jwt.JwtFilter;
-import com.authentication.service.config.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,7 +25,7 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     @Autowired
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(@Lazy JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
@@ -36,8 +37,8 @@ public class SecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
                 .authorizeRequests()
-                    .antMatchers("/admin/*").hasRole("ADMIN")
-                    .antMatchers("/user/*").hasRole("USER")
+                    .antMatchers(HttpMethod.GET,"/admin/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.GET,"/user/**").hasRole("USER")
                     .antMatchers("/register", "/login").permitAll()
                         .and()
                             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

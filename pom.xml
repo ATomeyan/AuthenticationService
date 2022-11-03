@@ -4,7 +4,6 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>BasicAuthentication</module>
         <module>JwtAuthentication</module>
         <module>AuthenticateWithOAuth2</module>
     </modules>
