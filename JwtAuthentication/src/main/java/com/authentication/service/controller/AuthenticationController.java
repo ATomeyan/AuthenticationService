@@ -1,6 +1,5 @@
 package com.authentication.service.controller;
 
-import com.authentication.service.config.jwt.JwtProvider;
 import com.authentication.service.dto.AuthenticationRequest;
 import com.authentication.service.dto.AuthenticationResponse;
 import com.authentication.service.dto.RegistrationRequest;
@@ -23,12 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final UserService userService;
-    private final JwtProvider provider;
 
     @Autowired
-    public AuthenticationController(UserService userService, JwtProvider provider) {
+    public AuthenticationController(UserService userService) {
         this.userService = userService;
-        this.provider = provider;
     }
 
     @PostMapping("/register")
@@ -44,10 +41,8 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
-        User user = userService.findByUsernameAndPassword(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        AuthenticationResponse response = userService.findByUsernameAndPassword(authenticationRequest);
 
-        String token = provider.tokenGenerator(user.getUsername());
-
-        return new ResponseEntity<>(new AuthenticationResponse(token), HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

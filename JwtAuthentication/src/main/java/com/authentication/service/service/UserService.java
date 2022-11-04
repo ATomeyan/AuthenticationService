@@ -1,5 +1,7 @@
 package com.authentication.service.service;
 
+import com.authentication.service.dto.AuthenticationRequest;
+import com.authentication.service.dto.AuthenticationResponse;
 import com.authentication.service.entity.User;
 
 /**
@@ -12,5 +14,5 @@ public interface UserService {
 
     void save(User user);
 
-    User findByUsernameAndPassword(String username, String password);
+    AuthenticationResponse findByUsernameAndPassword(AuthenticationRequest request);
 }

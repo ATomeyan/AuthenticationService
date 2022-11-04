@@ -1,5 +1,8 @@
 package com.authentication.service.service.impl;
 
+import com.authentication.service.config.jwt.JwtProvider;
+import com.authentication.service.dto.AuthenticationRequest;
+import com.authentication.service.dto.AuthenticationResponse;
 import com.authentication.service.entity.Role;
 import com.authentication.service.entity.User;
 import com.authentication.service.repository.RoleRepository;
@@ -23,12 +26,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final JwtProvider provider;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtProvider provider) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.provider = provider;
     }
 
     @Override
@@ -48,11 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
-        User user = userRepository.findByUsername(username).orElse(null);
+    public AuthenticationResponse findByUsernameAndPassword(AuthenticationRequest request) {
+        User user = userRepository.findByUsername(request.getUsername()).orElse(null);
+        String token = provider.tokenGenerator(request.getUsername());
 
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return user;
+        if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            return new AuthenticationResponse(token);
         }
 
         return null;

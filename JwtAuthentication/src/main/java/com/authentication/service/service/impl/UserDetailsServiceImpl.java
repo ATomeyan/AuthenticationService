@@ -4,11 +4,16 @@ import com.authentication.service.config.UserDetailsImpl;
 import com.authentication.service.entity.User;
 import com.authentication.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Artur Tomeyan
@@ -28,7 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);
-
-        return UserDetailsImpl.fromUserEntityToCustom(user);
+        Set<SimpleGrantedAuthority> role = new HashSet<>(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), role);
+//        return new UserDetailsImpl(user);
     }
 }

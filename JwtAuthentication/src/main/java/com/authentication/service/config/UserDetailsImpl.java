@@ -6,8 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * @author Artur Tomeyan
@@ -15,33 +14,34 @@ import java.util.Collections;
  */
 public class UserDetailsImpl implements UserDetails {
 
-    private String username;
-    private String password;
-    private Collection<? extends GrantedAuthority> grantedAuthorities;
+    private final transient User user;
 
-    public static UserDetailsImpl fromUserEntityToCustom(User user) {
-        UserDetailsImpl userDetails = new UserDetailsImpl();
-
-        userDetails.username = user.getUsername();
-        userDetails.password = user.getPassword();
-        userDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRoles().stream().map(Role::getName).toString()));
-
-        return userDetails;
+    public UserDetailsImpl(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantedAuthorities;
+        Set<Role> roles = user.getRoles();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        Set<SimpleGrantedAuthority> role = new HashSet<>(Collections.singleton(new SimpleGrantedAuthority(roles.toString())));
+
+//        for (Role role : roles) {
+//        }
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        return role;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUsername();
     }
 
     @Override
