@@ -14,5 +14,5 @@ public interface UserService {
 
     void save(User user);
 
-    AuthenticationResponse findByUsernameAndPassword(AuthenticationRequest request);
+    AuthenticationResponse login(AuthenticationRequest request);
 }

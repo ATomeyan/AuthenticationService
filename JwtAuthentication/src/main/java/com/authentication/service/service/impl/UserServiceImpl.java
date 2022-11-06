@@ -12,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author Artur Tomeyan
  * @date 03/11/2022
@@ -43,16 +39,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         Role role = roleRepository.findByName("ROLE_USER");
-        Set<Role> roles = new HashSet<>(Collections.singleton(role));
 
-        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
     }
 
     @Override
-    public AuthenticationResponse findByUsernameAndPassword(AuthenticationRequest request) {
+    public AuthenticationResponse login(AuthenticationRequest request) {
         User user = userRepository.findByUsername(request.getUsername()).orElse(null);
         String token = provider.tokenGenerator(request.getUsername());
 

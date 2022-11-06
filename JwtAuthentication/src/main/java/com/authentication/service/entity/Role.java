@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * @author Artur Tomeyan
@@ -22,24 +21,12 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
     public Role() {
     }
 
-    public Role(Integer id, String name, Set<User> users) {
+    public Role(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.users = users;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     public Integer getId() {
@@ -69,7 +56,6 @@ public class Role {
         return new EqualsBuilder()
                 .append(id, role.id)
                 .append(name, role.name)
-                .append(users, role.users)
                 .isEquals();
     }
 
@@ -78,7 +64,6 @@ public class Role {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .append(name)
-                .append(users)
                 .toHashCode();
     }
 
@@ -87,7 +72,6 @@ public class Role {
         return new ToStringBuilder(this)
                 .append("id", id)
                 .append("name", name)
-                .append("users", users)
                 .toString();
     }
 }

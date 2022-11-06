@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * @author Artur Tomeyan
@@ -26,19 +25,18 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User() {
     }
 
-    public User(Integer id, String username, String password, Set<Role> roles) {
+    public User(Integer id, String username, String password, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
     }
 
     public Integer getId() {
@@ -65,12 +63,12 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class User {
                 .append(id, user.id)
                 .append(username, user.username)
                 .append(password, user.password)
-                .append(roles, user.roles)
+                .append(role, user.role)
                 .isEquals();
     }
 
@@ -95,7 +93,7 @@ public class User {
                 .append(id)
                 .append(username)
                 .append(password)
-                .append(roles)
+                .append(role)
                 .toHashCode();
     }
 
@@ -105,7 +103,7 @@ public class User {
                 .append("id", id)
                 .append("username", username)
                 .append("password", password)
-                .append("roles", roles)
+                .append("roles", role)
                 .toString();
     }
 }

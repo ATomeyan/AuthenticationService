@@ -41,7 +41,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
-        AuthenticationResponse response = userService.findByUsernameAndPassword(authenticationRequest);
+        AuthenticationResponse response = userService.login(authenticationRequest);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
