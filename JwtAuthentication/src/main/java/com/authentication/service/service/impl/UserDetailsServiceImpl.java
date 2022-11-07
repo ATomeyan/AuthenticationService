@@ -1,17 +1,19 @@
 package com.authentication.service.service.impl;
 
-import com.authentication.service.entity.Roles;
+import com.authentication.service.entity.Role;
 import com.authentication.service.entity.User;
 import com.authentication.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Artur Tomeyan
@@ -31,12 +33,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);
+        Set<Role> roles = user.getRole();
+        Set<GrantedAuthority> authorities = new HashSet<>();
 
-        Set<? extends GrantedAuthority> role = new HashSet<>(Arrays.asList(Roles.values()));
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
 
-        //Set<SimpleGrantedAuthority> role = new HashSet<>(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), role);
-//        return new UserDetailsImpl(user);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 }

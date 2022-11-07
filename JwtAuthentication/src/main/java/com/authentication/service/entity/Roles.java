@@ -9,8 +9,8 @@ public enum Roles {
     ADMIN("ROLE_ADMIN", 1),
     USER("ROLE_USER", 2);
 
-    private final String role;
     private final Integer code;
+    private final String role;
 
     Roles(String role, Integer code) {
         this.role = role;
@@ -25,7 +25,7 @@ public enum Roles {
         return code;
     }
 
-    public String fromCode(Integer code) {
+    public static String fromCode(Integer code) {
         if (code.equals(ADMIN.code)) {
             return ADMIN.role;
         } else if (code.equals(USER.code)) {
@@ -36,9 +36,9 @@ public enum Roles {
     }
 
     public String fromRole(String role) {
-        if (role.equals(ADMIN.role)) {
+        if (role.equalsIgnoreCase(ADMIN.role)) {
             return ADMIN.role;
-        } else if (role.equals(USER.role)) {
+        } else if (role.equalsIgnoreCase(USER.role)) {
             return USER.role;
         } else {
             return null;
