@@ -3,6 +3,7 @@ package com.authentication.service.service.impl;
 import com.authentication.service.config.jwt.JwtProvider;
 import com.authentication.service.dto.AuthenticationRequest;
 import com.authentication.service.dto.AuthenticationResponse;
+import com.authentication.service.dto.RegistrationRequest;
 import com.authentication.service.entity.Role;
 import com.authentication.service.entity.User;
 import com.authentication.service.repository.RoleRepository;
@@ -11,6 +12,8 @@ import com.authentication.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 /**
  * @author Artur Tomeyan
@@ -37,10 +40,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
+    public void save(RegistrationRequest request) {
+
+        User user = new User();
+
         Role role = roleRepository.findByName("ROLE_USER");
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Collections.singleton(role));
 
         userRepository.save(user);
     }

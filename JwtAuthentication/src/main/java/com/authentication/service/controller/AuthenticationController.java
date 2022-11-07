@@ -30,13 +30,10 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<User> registerRequest(@RequestBody RegistrationRequest registrationRequest) {
-        User user = new User();
-        user.setUsername(registrationRequest.getUsername());
-        user.setPassword(registrationRequest.getPassword());
 
-        userService.save(user);
+        userService.save(registrationRequest);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")

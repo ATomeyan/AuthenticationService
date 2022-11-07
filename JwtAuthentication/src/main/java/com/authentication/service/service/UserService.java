@@ -2,6 +2,7 @@ package com.authentication.service.service;
 
 import com.authentication.service.dto.AuthenticationRequest;
 import com.authentication.service.dto.AuthenticationResponse;
+import com.authentication.service.dto.RegistrationRequest;
 import com.authentication.service.entity.User;
 
 /**
@@ -12,7 +13,7 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    void save(User user);
+    void save(RegistrationRequest request);
 
     AuthenticationResponse login(AuthenticationRequest request);
 }
