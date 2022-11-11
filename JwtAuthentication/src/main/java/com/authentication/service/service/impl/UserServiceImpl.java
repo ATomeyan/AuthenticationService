@@ -10,9 +10,14 @@ import com.authentication.service.repository.RoleRepository;
 import com.authentication.service.repository.UserRepository;
 import com.authentication.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 
 /**
@@ -26,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider provider;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtProvider provider) {
         this.userRepository = userRepository;
@@ -63,5 +69,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return null;
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
     }
 }
