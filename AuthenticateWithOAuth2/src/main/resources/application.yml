@@ -17,5 +17,10 @@ spring:
             client-id: 456714317581-s2s80eane7jckd6km6bbptcu1lpcnamh.apps.googleusercontent.com
             client-secret: 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
             scope:
+              - openid
               - profile
               - email
+      resource-server:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
