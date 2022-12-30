@@ -27,15 +27,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/**").fullyAuthenticated()
+//        http.authorizeRequests()
+//                .antMatchers("/**").fullyAuthenticated()
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .oauth2ResourceServer().jwt()
+//                .and()
+//                .and()
+//                .csrf().and().cors().disable();
+
+
+        http
+                .antMatcher("/**").authorizeRequests()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .oauth2ResourceServer().jwt()
-                .and()
-                .and()
-                .csrf().and().cors().disable();
+                .oauth2Login();
 
         return http.build();
     }

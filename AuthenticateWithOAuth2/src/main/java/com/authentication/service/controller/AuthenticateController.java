@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 18/11/2022
  */
 @RestController
-@RequestMapping("/auth")
 public class AuthenticateController {
 
-    @GetMapping("/test")
-    public String testAuth(){
+    @GetMapping("/")
+    public String testHello(){
         return "Hello";
+    }
+
+    @GetMapping("/authenticated")
+    public String testAuth(){
+        return "Authenticated";
     }
 }
