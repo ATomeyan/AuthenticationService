@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticateController {
 
-    @GetMapping
+    @GetMapping("/test")
     public String testAuth(){
         return "Hello";
     }
