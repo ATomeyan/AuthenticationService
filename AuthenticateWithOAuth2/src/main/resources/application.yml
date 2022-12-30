@@ -1,11 +1,21 @@
 spring:
   datasource:
+    url: jdbc:mysql://localhost:3306/security_demo
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/security_demo
   jpa:
     generate-ddl: true
     properties:
       hibernate:
         ddl-auto: update
         dialect: org.hibernate.dialect.MySQL5Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 456714317581-s2s80eane7jckd6km6bbptcu1lpcnamh.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
