@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Collections.singleton(role));
+        user.getUserRoles().stream().iterator().next().setRole(role);
 
         userRepository.save(user);
     }
@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
     public AuthenticationResponse login(AuthenticationRequest request) {
         User user = userRepository.findByUsername(request.getUsername()).orElse(null);
         String token = provider.tokenGenerator(request.getUsername());
+
 
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return new AuthenticationResponse(token);

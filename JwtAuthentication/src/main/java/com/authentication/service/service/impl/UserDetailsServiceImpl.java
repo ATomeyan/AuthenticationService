@@ -1,6 +1,7 @@
 package com.authentication.service.service.impl;
 
 import com.authentication.service.entity.Role;
+import com.authentication.service.entity.Roles;
 import com.authentication.service.entity.User;
 import com.authentication.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Artur Tomeyan
@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);
-        Set<Role> roles = user.getRole();
+        Set<Role> roles = Collections.singleton(user.getUserRoles().stream().iterator().next().getRole());
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         for (Role role : roles) {
